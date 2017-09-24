@@ -37,7 +37,6 @@ def route(waypoints, t=None, title=None):
     fig.add_axes(ax)
 
     if title is not None:
-        print("title", title)
         plt.title(title, color="green")
 
     # but do show all the data on the viewport, not some random other segment of
