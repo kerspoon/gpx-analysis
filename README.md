@@ -25,8 +25,10 @@ And also graph:
  + speed
  + steepness
 - a scatter plot of
- + speed vs. steepness of climb
+ + speed vs. steepness of climb (\*)
  + distance and duration
+
+\* the speed steepness scatterplot also shows Naismith's Rule and a least squares fit of the same formula as Naismith's Rule with the optimal 2 parameters. You can see the fitted values in the stats file.
 
 # To Do
 
@@ -34,8 +36,14 @@ And also graph:
 
 # Notes
 
-## Non-linear regression
+## Naismith's Rule
 
+- https://en.wikipedia.org/wiki/Naismith%27s_rule
+- https://www.wolframalpha.com/input/?i=60%2F(12+%2B+(+tan(40+deg)+*100))
+
+## Non-linear regression & Curve fitting
+
+- http://www.walkingrandomly.com/?p=5215
 - http://www.stat.colostate.edu/regression_book/chapter9.pdf
 - https://en.wikipedia.org/wiki/Non-linear_least_squares
 - https://en.wikipedia.org/wiki/Segmented_regression

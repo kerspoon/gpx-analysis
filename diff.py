@@ -2,10 +2,11 @@ import math
 from datetime import timedelta
 
 class Diff(object):
-    def __init__(self, distance, duration, climb, w1, w2):
+    def __init__(self, distance, duration, climb, steepness, w1, w2):
         self.distance = distance # in meters
         self.duration = duration # in timedelta format
         self.climb = climb # in meters
+        self.steepness = steepness # metres per meter
         self.speed = distance/duration.total_seconds() # in metres / second
         self.w1 = w1
         self.w2 = w2
@@ -45,11 +46,12 @@ def haversine_distance(latitude_1, longitude_1, latitude_2, longitude_2):
 def wpdiff(point, last):
     distance = haversine_distance(point.lat, point.lon, last.lat, last.lon)
     duration = last.time - point.time
-    climb = (last.ele - point.ele)/distance
+    climb = (last.ele - point.ele)
+    steepness = climb/distance
     if duration == timedelta(minutes=0):
         print('zero duration', point, last)
         raise Exception("baad")
-    return Diff(distance, duration, climb, point, last)
+    return Diff(distance, duration, climb, steepness, point, last)
 
 
 def calcluate_waypoint_deltas(waypoints):

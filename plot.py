@@ -4,6 +4,7 @@ import pylab
 import numpy as np
 from matplotlib.collections import LineCollection
 from matplotlib.colors import ListedColormap, BoundaryNorm
+import math
 
 
 def create_line_collection(x, y, t=None):
@@ -60,12 +61,24 @@ def scatter_dist_time(diffs):
     plt.ylabel('time')
     return plt
 
-def scatter_climb_speed(diffs):
+def scatter_climb_speed(diffs, popt):
     fig = plt.figure()
     plt.title('correlation between speed and steepness of climb')
-    plt.scatter([diff.climb for diff in diffs],[diff.speed for diff in diffs])
-    plt.xlabel('climb')
-    plt.ylabel('speed')
+    plt.grid(True)
+    plt.scatter([math.degrees(math.atan(diff.steepness)) for diff in diffs],[diff.speed*3.6 for diff in diffs])
+
+    # also show Naismith's Rule
+    x = np.linspace(0, 40)
+    y = lambda x: 60.0/(12 + 100*np.tan(np.deg2rad(x)))
+    plt.plot(x, y(x))
+
+    # and show fitted curve
+    x = np.linspace(0, 40)
+    y2 = lambda x: 60.0/(popt[0] + popt[1]*np.tan(np.deg2rad(x)))
+    plt.plot(x, y2(x))
+
+    plt.xlabel('climb (deg)')
+    plt.ylabel('speed (km/h)')
     return plt
 
 def show():
