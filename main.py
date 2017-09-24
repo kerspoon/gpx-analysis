@@ -60,7 +60,6 @@ def smooth(x,window_len=11,window='hanning'):
 # ---------------------------------------------------------------------------- #
 
 
-
 def main(filepath, datapath, args):
     with open(datapath + "-info.txt", 'w') as outfile:
 
@@ -72,6 +71,12 @@ def main(filepath, datapath, args):
             routes = parse_gpx_file(infile)
 
             for waypoints in routes:
+
+                if len(waypoints) <= args.killends*2:
+                    print("skipping, not enough data points after killing ends.", len(waypoints), "datapoints")
+                    print("skipping, not enough data points after killing ends.", len(waypoints), "datapoints", file=outfile)
+                    continue
+
                 # the first few are often crap
                 waypoints = waypoints[args.killends:-args.killends]
 
@@ -95,19 +100,24 @@ def main(filepath, datapath, args):
                 t = smooth([diff.climb for diff in diffs], args.smoothing)
                 plt = plot.route(waypoints, t, "steepness of climb")
                 plt.savefig(datapath + '-route-steepness.png')
+                plt.close()
 
                 plt = plot.route(waypoints, None, "altitude of route")
                 plt.savefig(datapath + '-route-altitude.png')
+                plt.close()
 
                 plt = plot.scatter_dist_time(diffs)
                 plt.savefig(datapath + '-scatter_dist_time.png')
+                plt.close()
 
                 plt = plot.scatter_climb_speed(diffs)
                 plt.savefig(datapath + '-scatter_climb_speed.png')
+                plt.close()
 
                 t = smooth([diff.speed for diff in diffs], args.smoothing)
                 plt = plot.route(waypoints, t, "speed of route")
                 plt.savefig(datapath + '-route-speed.png')
+                plt.close()
 
 
 if os.path.isdir(args.filepath):
